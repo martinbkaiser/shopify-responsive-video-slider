@@ -1,0 +1,574 @@
+<!-- 
+Developer: ITS Consulting Inc. 
+Version: 1.0
+Date: June 2017
+Application: The Harlings Jewellers Mobile Friendly Jewellery Selling Carousel 9000 (Patent Pending)
+-->
+
+<script type="text/javascript">
+  
+
+function iOSVersion() {
+  if(window.MSStream){
+    return false;
+  }
+  var match = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/),
+      version;
+  if (match !== undefined && match !== null) {
+    version = [
+      parseInt(match[1], 10),
+      parseInt(match[2], 10),
+      parseInt(match[3] || 0, 10)
+    ];
+    return parseFloat(version.join('.'));
+  }
+
+  return 2222;
+}
+
+var ios_verison = iOSVersion();
+ 
+var first_rest_size = false;
+  
+function resize_slider(){
+    var window_width = $(window).width();
+
+
+      if(window_width < 769){
+          if(iOSVersion() >= 10){
+            var desktop_remade_code =  $("#banner-video-desktop video").html();
+            $("#banner-video-desktop video").remove();
+            $("#banner-video-mobile video").show();
+            $('#home-slider').trigger('refresh.owl.carousel');
+          }else{
+            $("#banner-video-desktop video").remove();
+            $("#banner-video-mobile video").show();
+            $("#banner-video-mobile video").attr("controls","");
+            $(".video-item button").hide();
+          }
+      }else{
+            if(iOSVersion() < 10){
+                $("#banner-video-desktop video").attr("controls","");
+                $(".video-item button").hide();
+            }
+            $("#banner-video-mobile video").remove();
+            $("#banner-video-desktop video").show();
+      }
+      
+    
+  
+    var resize_height = $(window).height()-$(".top").height()-$("#navigation-bar").height();
+  	if(resize_height > 500){
+		$('.image-item').height(resize_height-8);
+    }else{
+        $('.image-item').height(500);
+    }
+    
+	// Mobile Video Detect
+  
+  	$(".banner-jewellery-image").each(function( index ) {
+    	var default_width = $(this).data( "default-width" ).replace('px','');
+      	var window_width_percent = $(window).width()/1920;
+      
+      
+        if(((window_width_percent*1.6)*default_width) > (default_width/1.2)){
+        	$(this).width((window_width_percent*1.6)*default_width);
+            $(this).css("margin-left","-"+(((window_width_percent*1.6)*default_width)/2)+"px");
+        }else{
+          	$(this).width(default_width/1.2);
+            $(this).css("margin-left","-"+((default_width/1.2)/2)+"px");
+        };  
+
+		
+        
+    });
+ 	$('#home-slider').trigger('refresh.owl.carousel');
+};
+  
+
+  
+$( document ).ready(function() {
+	/* New Homepage Slider */
+        var owl = jQuery('#home-slider');
+  		resize_slider();
+        owl.owlCarousel({
+              items:1,
+              animateOut: 'fadeOut',
+              merge:true,
+              nav: true,
+          	  navText : ["<i class='fa fa-chevron-left'></i>","<i class='fa fa-chevron-right'></i>"],
+              dots: true,
+              loop: false,
+              mouseDrag: true,
+              singleItem: true,
+              video:true,
+              lazyLoad:true,
+              center:true,
+              autoHeight:true,
+              autoplay:true,
+              autoplayTimeout:8000,
+              autoplayHoverPause:true,
+              afterAction: function(current) {
+              	//current.find('video').get(0).play();
+          }
+        });
+  	
+});  
+
+$( window ).resize(function() {
+	 resize_slider();
+});
+  
+
+  
+jQuery(window).on('load', function () {
+
+    var owl = jQuery('#home-slider');
+    owl.trigger('stop.owl.autoplay');
+    jQuery('.video-home video').trigger('pause');
+
+    function iOSVersion() {
+      if(window.MSStream){
+        return false;
+      }
+      var match = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/),
+          version;
+      if (match !== undefined && match !== null) {
+        version = [
+          parseInt(match[1], 10),
+          parseInt(match[2], 10),
+          parseInt(match[3] || 0, 10)
+        ];
+        return parseFloat(version.join('.'));
+      }
+      return 2222;
+    }
+
+    var ios_verison = iOSVersion();
+    var window_width = $(window).width();
+  
+    var video_link_mobile = jQuery("#video-slide-link").attr('href');
+    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+          jQuery("#video-slide-link").attr('href','#');
+    };
+  
+  	var mobile_click_test = 0;
+  
+    jQuery("#video-slide-link").click(function(e){
+       if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+          if(mobile_click_test == 0) {
+              e.preventDefault();
+              if(jQuery( "#banner-video-desktop video" ).length){
+                  var video = document.getElementById('banner-video-desktop-controler');
+              }
+              if(jQuery( "#banner-video-mobile video" ).length){
+                  var video = document.getElementById('banner-video-mobile-controler');
+              }
+              video.play();
+              if(ios_verison < 10 ) {
+                  jQuery(".video-mute-btn").hide();
+                  jQuery(".video-play-btn").hide();
+              }else{
+                  jQuery(".fa-play").hide();
+                  jQuery(".fa-pause").show();
+                  jQuery(".video-mute-btn").show();
+                  jQuery(".video-play-btn").show();
+              }
+              setTimeout(function(){  
+                    jQuery("#video-slide-link").attr("href",video_link_mobile);
+                    mobile_click_test = 1; 
+              },5000);
+
+          };
+       };
+     });
+  
+    function playfunction() {
+      	var video = document.getElementById('banner-video-desktop video');
+    };
+
+
+
+    var video_position = setInterval(function(){ myTimer() }, 500);
+
+    function myStopFunction() {
+        clearInterval(video_position);
+    };
+
+    function myTimer(video_item) {
+          if(jQuery('.video-home video').get(0).currentTime > 33){
+              jQuery('.video-home video').trigger('pause');
+              setTimeout(function(){ 
+                owl.trigger('play.owl.autoplay', ["2000", "300"]);
+                myStopFunction();
+              },2000);
+          };
+    };
+
+
+    var vid_slide_count_array = [];  
+    $('.video-home').each(function() { 
+        var obj_count = $(this).data( "slidecount" );
+        vid_slide_count_array.push(obj_count);
+    });
+
+
+
+    owl.on('changed.owl.carousel', function(event) {
+      if(jQuery.inArray(event.page.index, vid_slide_count_array) != -1 & ios_verison >= 10){
+            owl.trigger('stop.owl.autoplay');
+         	jQuery(".fa-play").show();
+         	jQuery(".fa-pause").hide();
+             if(jQuery( "#banner-video-desktop video" ).length){
+                jQuery(".fa-play").hide();
+                jQuery(".fa-pause").show();
+                jQuery(".video-home[data-slidecount='"+event.page.index+"'] video").get(0).currentTime = 0; 
+                jQuery(".video-home[data-slidecount='"+event.page.index+"'] video").trigger('play');
+                video_position = setInterval(function(){ myTimer(event.page.index) }, 500);
+             }
+      }else{
+        jQuery('.video-home video').trigger('pause');
+        owl.trigger('play.owl.autoplay', ["2000", "300"]); 
+      };
+	});
+  
+  
+
+    // Desktop Video Controls
+    var vid = document.getElementById('banner-video-desktop-controler');
+    jQuery(".video-mute-btn").click(function(){
+        if(jQuery( "#banner-video-desktop video" ).length){
+          if(jQuery(vid).prop('muted')){
+            vid.muted = false;
+            jQuery(".fa-volume-up").show();
+            jQuery(".fa-volume-off").hide();
+          }else{
+            vid.muted = true;
+            jQuery(".fa-volume-up").hide();
+            jQuery(".fa-volume-off").show();
+          };
+    };     
+    jQuery(".video-play-btn").click(function(){
+      if(jQuery( "#banner-video-desktop video" ).length){
+         if (vid.paused == false) {
+              vid.pause();
+              jQuery(".fa-play").show();
+              jQuery(".fa-pause").hide();
+          }else{
+              vid.play();
+              jQuery(".fa-play").hide();
+              jQuery(".fa-pause").show();
+          };
+    };
+       
+	// Mobile Video Controls
+    var vid_mobile = document.getElementById('banner-video-mobile-controler');
+    if(jQuery( "#banner-video-mobile video" ).length){
+        if(jQuery(vid_mobile).prop('muted')){
+            vid_mobile.muted = false;
+            jQuery(".fa-volume-up").show();
+            jQuery(".fa-volume-off").hide();
+        }else{
+          	vid_mobile.muted = true;
+          	jQuery(".fa-volume-up").hide();
+          	jQuery(".fa-volume-off").show();
+        };
+      }
+
+    });	
+    if(jQuery( "#banner-video-mobile video" ).length){
+        if (vid_mobile.paused == false) {
+            vid_mobile.pause();
+            jQuery(".fa-play").show();
+            jQuery(".fa-pause").hide();
+        }else{
+            vid_mobile.play();
+            jQuery(".fa-play").hide();
+            jQuery(".fa-pause").show();
+        };
+      }
+    });
+
+    
+  
+   
+});
+  
+</script>
+
+<style type="text/css">
+.harlings-custom-slider .owl-controls {
+    margin-top: -32px;
+    z-index:99999;
+}
+  
+.harlings-custom-slider .owl-controls .owl-page span {
+    display: block;
+    width: 12px;
+    height: 12px;
+    margin: 5px 7px;
+    filter: Alpha(Opacity=40);
+    opacity: 0.4;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+    background: #f3f3f3;
+} 
+  
+.harlings-custom-slider .owl-dot.active {
+    filter: Alpha(Opacity=80);
+    opacity: 0.8;
+}
+  
+  .harlings-custom-slider .owl-dot  {
+    display: block;
+    width: 12px;
+    height: 12px;
+    margin: 5px 7px;
+    filter: Alpha(Opacity=40);
+    opacity: 0.4;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+    background: #f3f3f3;
+    float:left;
+}
+  
+.owl-dots {
+    display: inline-block;
+    margin: auto;
+    margin-top: -12px;
+    margin-bottom: 21px !important;
+    height: 0px;
+}
+
+  .harlings-custom-slider {
+    text-align: center; 
+  }
+  
+  .camera_wrap {
+    border-bottom: 0px solid #011576;
+  }
+  
+  .home-slider-wrapper{
+   border-bottom: 5px solid #011576; 
+  }
+  
+  .harlings-custom-slider .owl-item {
+        margin-bottom: -5px !important;
+  }
+  
+  .video-mute-btn .fa-volume-off {
+  	display:none;
+  }
+  
+  .video-mute-btn .fa-volume-up {
+  	
+    display:initial;
+  }
+ 
+  .video-mute-btn {  
+    transition: all 0.5s ease;
+	position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background: rgba(0,0,0,0.2);
+    color:#fff !important;
+    border: none;
+    padding: 10px;
+    opacity:0.85;
+  }
+  
+  .video-mute-btn:hover {  
+    background: rgba(0,0,0,0.3);
+    opacity:1;
+  }  
+  
+  .video-mute-btn i {
+      font-size: 34px;
+  }
+
+ 
+  .video-play-btn .fa-pause {
+  	display:initial;
+  }
+  
+  .video-play-btn .fa-play {
+  	display:none;
+  }
+ 
+  .video-play-btn {  
+    transition: all 0.5s ease;
+	position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(0,0,0,0.2);
+    color:#fff !important;
+    border: none;
+    padding: 10px;
+    opacity:0.85;
+    float:right;
+  }
+  
+  .video-play-btn:hover {  
+    background: rgba(0,0,0,0.3);
+    opacity:1;
+  }  
+  
+  .video-play-btn i {
+      font-size: 34px;
+  }
+  
+  .video-play-btn .fa-play {
+      margin-right: -3px;
+      padding-left: 3px;
+  }
+  
+  #video-slide-link {
+      margin-bottom:-10px !important;  
+      display: block;
+  }
+  
+  @media (min-width: 0px) and (max-width: 768px){
+      .owl-dots {
+            margin-bottom: 5% !important;
+      }
+  }
+
+</style>
+
+
+
+<div class="home-slider-wrapper clearfix">
+  {% comment %} Main Slideshow {% endcomment %}
+  {% if settings.show_slideshow %}
+  {% if settings.slide-active-1 or settings.slide-active-2 or settings.slide-active-3 or settings.slide-active-4 or settings.slide-active-5 %}
+  <div class="camera_wrap owl-carousel owl-theme harlings-custom-slider" id="home-slider">
+    
+	{% assign count_active = 0 %}
+    {% for i in (1..8) %}
+        {% assign show = 'slide-active-' | append: i %}
+
+        {% if settings[show] %}
+            {% assign isvideo = 'slide-video-' | append: i %}
+            {% assign desktop_video_code = 'slide-desktop-video-' | append: i %}
+            {% assign mobile_video_code = 'slide-mobile-video-' | append: i %}
+
+            {% assign top-position = 'top-position-' | append: i %} 
+            {% assign left-position = 'left-position-' | append: i %} 
+
+            {% assign link = 'slide-link-' | append: i %}
+            {% assign image = 'slide-image-' | append: i %}
+
+            {% assign jewellery-image-1 = 'jewellery-image-1-' | append: i %}
+            {% assign jewellery-1-position = 'jewellery-1-top-bottom-position-checkbox-' | append: i %}
+            {% assign jewellery-1-top-bottom-position = 'jewellery-1-top-bottom-position-' | append: i %}
+            {% assign jewellery-1-left-position = 'jewellery-1-left-position-' | append: i %} 
+            {% assign jewellery-1-width = 'jewellery-1-width-' | append: i %}
+
+            {% assign jewellery-image-2 = 'jewellery-image-2-' | append: i %}
+            {% assign jewellery-2-position = 'jewellery-2-top-bottom-position-checkbox-' | append: i %}
+            {% assign jewellery-2-top-bottom-position = 'jewellery-2-top-bottom-position-' | append: i %}
+            {% assign jewellery-2-left-position = 'jewellery-2-left-position-' | append: i %} 
+            {% assign jewellery-2-width = 'jewellery-2-width-' | append: i %}
+
+            {% assign title = 'slide-heading-' | append: i %}
+            {% assign title-animation = 'slide-heading-animation-' | append: i %}
+            {% assign cta = 'slide-call-to-action-' | append: i %}
+            {% assign caption = 'slide-caption-' | append: i %}
+            {% assign caption-des = 'slide-caption-des-' | append: i %}
+
+
+            {% if settings[isvideo] == true %}
+             <div class="item video-item">
+                 <a  href="{{settings[link]}}" id="video-slide-link">
+                   <div id="banner-video-desktop" class="video-home desktop-video-player" data-slidecount="{{count_active}}" >
+                   {{settings[desktop_video_code]}}
+                   </div>
+                   <div id="banner-video-mobile" class="video-home mobile-video-player" data-slidecount="{{count_active}}">
+                   {{settings[mobile_video_code]}}
+                   </div>
+                 </a> 
+
+                    <button class="video-mute-btn" type="button">
+                      <i class="fa fa-volume-up fa-6" aria-hidden="true"></i>
+                      <i class="fa fa-volume-off" aria-hidden="true"></i><br/>
+                      <span class="mute-txt">Mute</span>
+                    </button>
+
+                    <button class="video-play-btn" type="button">
+                      <i class="fa fa-play" aria-hidden="true"></i>
+                      <i class="fa fa-pause" aria-hidden="true"></i><br/> 
+                    </button>          
+                </div>
+            {% else %}
+
+
+
+            <div class="item image-item" data-src="{{ image | append: '.png' | asset_url }}" data-fx="simpleFade" style="background-image:url({{ image | append: '.jpg' | asset_url }});">
+            {% if jewellery-image-1 != blank %}
+                <img src="{{ settings[jewellery-image-1] | img_url: 'master' }}" class="banner-jewellery-image"
+                    style="{% if settings[jewellery-1-position] == true %}
+                                top:{{settings[jewellery-1-top-bottom-position]}}; 
+                           {% else %}
+                                bottom:{{settings[jewellery-1-top-bottom-position]}}; 
+                           {% endif %} 
+                           left:{{settings[jewellery-1-left-position]}}; 
+                           width:{{settings[jewellery-1-width]}};"
+                    data-default-width="{{settings[jewellery-1-width]}}"/>
+             {% endif %} 
+
+             {% if jewellery-image-2 != blank %}
+                <img src="{{ settings[jewellery-image-2] | img_url: 'master' }}" class="banner-jewellery-image"
+                    style="{% if settings[jewellery-2-position] == true %}
+                                top:{{settings[jewellery-2-top-bottom-position]}}; 
+                           {% else %}
+                                bottom:{{settings[jewellery-2-top-bottom-position]}}; 
+                           {% endif %} 
+                           left:{{settings[jewellery-2-left-position]}}; 
+                           width:{{settings[jewellery-2-width]}};"
+                    data-default-width="{{settings[jewellery-2-width]}}"/>
+             {% endif %}
+
+
+              <div class="banner-text-container" style="bottom:{{settings[top-position]}}; left:{{settings[left-position]}};">	
+                    {% if settings[title] != blank %}
+                    <div class="camera_caption banner-title camera_title_{{i}} {{settings[title-animation]}}" style="font-size: 60px;">
+                      {{settings[title]}}
+                    </div><br/>
+                    {% endif %}
+                    {% if settings[caption] != blank %}
+                    <div class="camera_caption subheading-caption camera_caption_{{i}} {{settings[caption-animation]}}" style="font-size: 30px;">
+                      {{settings[caption]}}
+                    </div><br/>
+                    {% endif %}
+                    {% if settings[caption-des] != blank %}
+                    <div class="camera_caption description-caption camera_caption_des_{{i}} {{settings[caption-animation-des]}}">
+                      {{settings[caption-des]}}
+                    </div><br/>
+                    {% endif %}
+                    {% if settings[cta] != blank %}
+                    <div class="camera_caption camera_cta camera_cta_{{i}} {{settings[caption-animation-des]}}" style="font-size: 20px;">
+                      <a href="{{ settings[link] }}">{{settings[cta]}}</a>
+                    </div><br/>
+                    {% endif %}
+              </div>
+
+
+            </div>
+
+
+            {% endif %}
+    
+		{% assign count_active = count_active | plus: 1 %}
+    
+        {% endif %}
+    
+    {% endfor %} 
+    
+  </div>
+  {% endif %}
+  {% endif %}
+  
+ 
+</div>
