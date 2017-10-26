@@ -1,18 +1,16 @@
 <!-- 
-Developer: ITS Consulting Inc. 
-Version: 1.0
+Developer: Martin Kaiser
+Version: 1.1
 Date: June 2017
-Application: The Harlings Jewellers Mobile Friendly Jewellery Selling Carousel 9000 (Patent Pending)
 -->
 
 <script type="text/javascript">
-  
-
+	
 function iOSVersion() {
-  if(window.MSStream){
-    return false;
+	if(window.MSStream){
+  	return false;
   }
-  var match = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/),
+	var match = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/),
       version;
   if (match !== undefined && match !== null) {
     version = [
@@ -31,12 +29,12 @@ var ios_verison = iOSVersion();
 var first_rest_size = false;
   
 function resize_slider(){
-    var window_width = $(window).width();
+	var window_width = $(window).width();
 
 
-      if(window_width < 769){
-          if(iOSVersion() >= 10){
-            var desktop_remade_code =  $("#banner-video-desktop video").html();
+    if(window_width < 769){
+    	if(iOSVersion() >= 10){
+        	var desktop_remade_code =  $("#banner-video-desktop video").html();
             $("#banner-video-desktop video").remove();
             $("#banner-video-mobile video").show();
             $('#home-slider').trigger('refresh.owl.carousel');
@@ -45,19 +43,19 @@ function resize_slider(){
             $("#banner-video-mobile video").show();
             $("#banner-video-mobile video").attr("controls","");
             $(".video-item button").hide();
-          }
-      }else{
+          };
+      	}else{
             if(iOSVersion() < 10){
                 $("#banner-video-desktop video").attr("controls","");
                 $(".video-item button").hide();
-            }
+            };
             $("#banner-video-mobile video").remove();
             $("#banner-video-desktop video").show();
-      }
+      };
       
     
   
-    var resize_height = $(window).height()-$(".top").height()-$("#navigation-bar").height();
+	var resize_height = $(window).height()-$(".top").height()-$("#navigation-bar").height();
   	if(resize_height > 500){
 		$('.image-item').height(resize_height-8);
     }else{
@@ -65,12 +63,10 @@ function resize_slider(){
     }
     
 	// Mobile Video Detect
-  
   	$(".banner-jewellery-image").each(function( index ) {
     	var default_width = $(this).data( "default-width" ).replace('px','');
       	var window_width_percent = $(window).width()/1920;
-      
-      
+
         if(((window_width_percent*1.6)*default_width) > (default_width/1.2)){
         	$(this).width((window_width_percent*1.6)*default_width);
             $(this).css("margin-left","-"+(((window_width_percent*1.6)*default_width)/2)+"px");
@@ -78,10 +74,9 @@ function resize_slider(){
           	$(this).width(default_width/1.2);
             $(this).css("margin-left","-"+((default_width/1.2)/2)+"px");
         };  
-
 		
-        
     });
+	
  	$('#home-slider').trigger('refresh.owl.carousel');
 };
   
@@ -109,7 +104,6 @@ $( document ).ready(function() {
               autoplayTimeout:8000,
               autoplayHoverPause:true,
               afterAction: function(current) {
-              	//current.find('video').get(0).play();
           }
         });
   	
@@ -184,11 +178,9 @@ jQuery(window).on('load', function () {
      });
   
     function playfunction() {
-      	var video = document.getElementById('banner-video-desktop video');
+      var video = document.getElementById('banner-video-desktop video');
     };
-
-
-
+	
     var video_position = setInterval(function(){ myTimer() }, 500);
 
     function myStopFunction() {
@@ -204,26 +196,26 @@ jQuery(window).on('load', function () {
               },2000);
           };
     };
-
-
+	
     var vid_slide_count_array = [];  
     $('.video-home').each(function() { 
         var obj_count = $(this).data( "slidecount" );
         vid_slide_count_array.push(obj_count);
     });
 
-
-
     owl.on('changed.owl.carousel', function(event) {
       if(jQuery.inArray(event.page.index, vid_slide_count_array) != -1 & ios_verison >= 10){
+         
             owl.trigger('stop.owl.autoplay');
          	jQuery(".fa-play").show();
          	jQuery(".fa-pause").hide();
+        
              if(jQuery( "#banner-video-desktop video" ).length){
                 jQuery(".fa-play").hide();
                 jQuery(".fa-pause").show();
                 jQuery(".video-home[data-slidecount='"+event.page.index+"'] video").get(0).currentTime = 0; 
                 jQuery(".video-home[data-slidecount='"+event.page.index+"'] video").trigger('play');
+               	//var current_video_numb = jQuery(".video-home[data-slidecount='"+event.page.index+"'] video");
                 video_position = setInterval(function(){ myTimer(event.page.index) }, 500);
              }
       }else{
@@ -234,59 +226,70 @@ jQuery(window).on('load', function () {
   
   
 
-    // Desktop Video Controls
+    
+	// Video Controls (Desktop & Mobile)
+	
     var vid = document.getElementById('banner-video-desktop-controler');
-    jQuery(".video-mute-btn").click(function(){
-        if(jQuery( "#banner-video-desktop video" ).length){
-          if(jQuery(vid).prop('muted')){
-            vid.muted = false;
-            jQuery(".fa-volume-up").show();
-            jQuery(".fa-volume-off").hide();
-          }else{
-            vid.muted = true;
-            jQuery(".fa-volume-up").hide();
-            jQuery(".fa-volume-off").show();
-          };
-    };     
-    jQuery(".video-play-btn").click(function(){
-      if(jQuery( "#banner-video-desktop video" ).length){
-         if (vid.paused == false) {
-              vid.pause();
-              jQuery(".fa-play").show();
-              jQuery(".fa-pause").hide();
-          }else{
-              vid.play();
-              jQuery(".fa-play").hide();
-              jQuery(".fa-pause").show();
-          };
-    };
-       
-	// Mobile Video Controls
     var vid_mobile = document.getElementById('banner-video-mobile-controler');
-    if(jQuery( "#banner-video-mobile video" ).length){
-        if(jQuery(vid_mobile).prop('muted')){
-            vid_mobile.muted = false;
-            jQuery(".fa-volume-up").show();
-            jQuery(".fa-volume-off").hide();
-        }else{
-          	vid_mobile.muted = true;
-          	jQuery(".fa-volume-up").hide();
-          	jQuery(".fa-volume-off").show();
-        };
-      }
 
-    });	
-    if(jQuery( "#banner-video-mobile video" ).length){
-        if (vid_mobile.paused == false) {
-            vid_mobile.pause();
-            jQuery(".fa-play").show();
-            jQuery(".fa-pause").hide();
-        }else{
-            vid_mobile.play();
-            jQuery(".fa-play").hide();
-            jQuery(".fa-pause").show();
+    jQuery(".video-mute-btn").click(function(){
+	
+		// Desktop Video Controls
+        if(jQuery( "#banner-video-desktop video" ).length){
+          	if(jQuery(vid).prop('muted')){
+            	vid.muted = false;
+				jQuery(".fa-volume-up").show();
+				jQuery(".fa-volume-off").hide();
+          	}else{
+            	vid.muted = true;
+				jQuery(".fa-volume-up").hide();
+				jQuery(".fa-volume-off").show();
+          	};
         };
-      }
+		
+	  	// Mobile Video Controls
+      	if(jQuery( "#banner-video-mobile video" ).length){
+        	if(jQuery(vid_mobile).prop('muted')){
+				vid_mobile.muted = false;
+				jQuery(".fa-volume-up").show();
+				jQuery(".fa-volume-off").hide();
+        	}else{
+          		vid_mobile.muted = true;
+          		jQuery(".fa-volume-up").hide();
+          		jQuery(".fa-volume-off").show();
+        	};
+      	};
+		
+    });
+
+    jQuery(".video-play-btn").click(function(){
+	
+		// Desktop Video Controls
+    	if(jQuery( "#banner-video-desktop video" ).length){
+        	if (vid.paused == false) {
+            	vid.pause();
+              	jQuery(".fa-play").show();
+				jQuery(".fa-pause").hide();
+          	}else{
+				vid.play();
+				jQuery(".fa-play").hide();
+				jQuery(".fa-pause").show();
+          };
+      };
+	  
+	  	// Mobile Video Controls
+      	if(jQuery( "#banner-video-mobile video" ).length){
+			if (vid_mobile.paused == false) {
+				vid_mobile.pause();
+				jQuery(".fa-play").show();
+				jQuery(".fa-pause").hide();
+			}else{
+				vid_mobile.play();
+				jQuery(".fa-play").hide();
+				jQuery(".fa-pause").show();
+			};
+     	};
+		
     });
 
     
@@ -320,7 +323,7 @@ jQuery(window).on('load', function () {
     opacity: 0.8;
 }
   
-  .harlings-custom-slider .owl-dot  {
+.harlings-custom-slider .owl-dot  {
     display: block;
     width: 12px;
     height: 12px;
@@ -341,33 +344,38 @@ jQuery(window).on('load', function () {
     margin-bottom: 21px !important;
     height: 0px;
 }
-
-  .harlings-custom-slider {
-    text-align: center; 
-  }
   
-  .camera_wrap {
+@media (min-width: 0px) and (max-width: 768px){
+    .owl-dots {
+    	margin-bottom: 5% !important;
+    }
+}
+  
+.harlings-custom-slider {
+	text-align: center; 
+}
+  
+.camera_wrap {
     border-bottom: 0px solid #011576;
-  }
+}
   
-  .home-slider-wrapper{
-   border-bottom: 5px solid #011576; 
-  }
+.home-slider-wrapper{
+	border-bottom: 5px solid #011576; 
+}
   
-  .harlings-custom-slider .owl-item {
-        margin-bottom: -5px !important;
-  }
+.harlings-custom-slider .owl-item {
+	margin-bottom: -5px !important;
+}
   
-  .video-mute-btn .fa-volume-off {
-  	display:none;
-  }
+.video-mute-btn .fa-volume-off {
+	display:none;
+}
   
-  .video-mute-btn .fa-volume-up {
-  	
-    display:initial;
-  }
+.video-mute-btn .fa-volume-up {
+	display:initial;
+}
  
-  .video-mute-btn {  
+.video-mute-btn {  
     transition: all 0.5s ease;
 	position: absolute;
     bottom: 20px;
@@ -377,67 +385,58 @@ jQuery(window).on('load', function () {
     border: none;
     padding: 10px;
     opacity:0.85;
-  }
+}
   
-  .video-mute-btn:hover {  
+.video-mute-btn:hover {  
     background: rgba(0,0,0,0.3);
     opacity:1;
-  }  
+}  
   
-  .video-mute-btn i {
-      font-size: 34px;
-  }
+.video-mute-btn i {
+	font-size: 34px;
+}
 
  
-  .video-play-btn .fa-pause {
-  	display:initial;
-  }
-  
-  .video-play-btn .fa-play {
-  	display:none;
-  }
- 
-  .video-play-btn {  
-    transition: all 0.5s ease;
+.video-play-btn .fa-pause {
+	display:initial;
+}
+
+.video-play-btn .fa-play {
+	display:none;
+}
+
+.video-play-btn {  
+	transition: all 0.5s ease;
 	position: absolute;
-    bottom: 20px;
-    right: 20px;
-    background: rgba(0,0,0,0.2);
-    color:#fff !important;
-    border: none;
-    padding: 10px;
-    opacity:0.85;
-    float:right;
-  }
-  
-  .video-play-btn:hover {  
-    background: rgba(0,0,0,0.3);
-    opacity:1;
-  }  
-  
-  .video-play-btn i {
-      font-size: 34px;
-  }
-  
-  .video-play-btn .fa-play {
-      margin-right: -3px;
-      padding-left: 3px;
-  }
-  
-  #video-slide-link {
-      margin-bottom:-10px !important;  
-      display: block;
-  }
-  
-  @media (min-width: 0px) and (max-width: 768px){
-      .owl-dots {
-            margin-bottom: 5% !important;
-      }
-  }
+	bottom: 20px;
+	right: 20px;
+	background: rgba(0,0,0,0.2);
+	color:#fff !important;
+	border: none;
+	padding: 10px;
+	opacity:0.85;
+	float:right;
+}
 
+.video-play-btn:hover {  
+	background: rgba(0,0,0,0.3);
+	opacity:1;
+}  
+
+.video-play-btn i {
+	font-size: 34px;
+}
+
+.video-play-btn .fa-play {
+	margin-right: -3px;
+	padding-left: 3px;
+}
+
+#video-slide-link {
+	margin-bottom:-10px !important;  
+	display: block;
+}
 </style>
-
-
 
 <div class="home-slider-wrapper clearfix">
   {% comment %} Main Slideshow {% endcomment %}
@@ -477,17 +476,25 @@ jQuery(window).on('load', function () {
             {% assign cta = 'slide-call-to-action-' | append: i %}
             {% assign caption = 'slide-caption-' | append: i %}
             {% assign caption-des = 'slide-caption-des-' | append: i %}
-
+            {% assign caption-animation = 'slide-caption-animation-' | append: i %}
+            {% assign caption-animation-des = 'slide-caption-animation-des-' | append: i %}
+            {% assign color-heading = 'slide-heading-colour-' | append: i %}
+            {% assign color-caption = 'slide-caption-colour-' | append: i %}
+            {% assign color-caption-des = 'slide-caption-colour-des-' | append: i %}
+            {% assign color-cta = 'slide-call-to-action-bg-' | append: i %}
 
             {% if settings[isvideo] == true %}
              <div class="item video-item">
                  <a  href="{{settings[link]}}" id="video-slide-link">
+
                    <div id="banner-video-desktop" class="video-home desktop-video-player" data-slidecount="{{count_active}}" >
                    {{settings[desktop_video_code]}}
                    </div>
                    <div id="banner-video-mobile" class="video-home mobile-video-player" data-slidecount="{{count_active}}">
                    {{settings[mobile_video_code]}}
                    </div>
+
+
                  </a> 
 
                     <button class="video-mute-btn" type="button">
