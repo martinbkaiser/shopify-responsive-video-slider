@@ -6,14 +6,13 @@ Application: The Harlings Jewellers Mobile Friendly Jewellery Selling Carousel 9
 -->
 
 <script type="text/javascript">
-  
 
 function iOSVersion() {
   if(window.MSStream){
     return false;
   }
   var match = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/),
-      version;
+    version;
   if (match !== undefined && match !== null) {
     version = [
       parseInt(match[1], 10),
@@ -22,17 +21,14 @@ function iOSVersion() {
     ];
     return parseFloat(version.join('.'));
   }
-
   return 2222;
 }
 
 var ios_verison = iOSVersion();
- 
 var first_rest_size = false;
   
 function resize_slider(){
     var window_width = jQuery(window).width();
-
 
       if(window_width < 769){
           if(iOSVersion() >= 10){
@@ -59,37 +55,32 @@ function resize_slider(){
   
     var resize_height = jQuery(window).height()-jQuery(".top").height()-jQuery("#navigation-bar").height();
     if(resize_height > 500){
-    jQuery('.image-item').height(resize_height-8);
+      jQuery('.image-item').height(resize_height-8);
     }else{
-        jQuery('.image-item').height(500);
+      jQuery('.image-item').height(500);
     }
     
-  // Mobile Video Detect
-  
+    // Mobile Video Detect
     jQuery(".banner-jewellery-image").each(function( index ) {
-      var default_width = jQuery(this).data( "default-width" ).replace('px','');
+        var default_width = jQuery(this).data( "default-width" ).replace('px','');
         var window_width_percent = jQuery(window).width()/1920;
-      
-      
+        
         if(((window_width_percent*1.6)*default_width) > (default_width/1.2)){
           jQuery(this).width((window_width_percent*1.6)*default_width);
-            jQuery(this).css("margin-left","-"+(((window_width_percent*1.6)*default_width)/2)+"px");
+          jQuery(this).css("margin-left","-"+(((window_width_percent*1.6)*default_width)/2)+"px");
         }else{
-            jQuery(this).width(default_width/1.2);
-            jQuery(this).css("margin-left","-"+((default_width/1.2)/2)+"px");
-        };  
-
-    
-        
+          jQuery(this).width(default_width/1.2);
+          jQuery(this).css("margin-left","-"+((default_width/1.2)/2)+"px");
+        };    
     });
-  jQuery('#home-slider').trigger('refresh.owl.carousel');
+    jQuery('#home-slider').trigger('refresh.owl.carousel');
 };
   
 
   
 jQuery( document ).ready(function() {
   /* New Homepage Slider */
-        var owl = jQuery('#home-slider');
+      var owl = jQuery('#home-slider');
       resize_slider();
         owl.owlCarousel({
               items:1,
@@ -126,23 +117,6 @@ jQuery(window).on('load', function () {
     var owl = jQuery('#home-slider');
     owl.trigger('stop.owl.autoplay');
     jQuery('.video-home video').trigger('pause');
-
-    function iOSVersion() {
-      if(window.MSStream){
-        return false;
-      }
-      var match = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/),
-          version;
-      if (match !== undefined && match !== null) {
-        version = [
-          parseInt(match[1], 10),
-          parseInt(match[2], 10),
-          parseInt(match[3] || 0, 10)
-        ];
-        return parseFloat(version.join('.'));
-      }
-      return 2222;
-    }
 
     var ios_verison = iOSVersion();
     var window_width = jQuery(window).width();
@@ -187,8 +161,6 @@ jQuery(window).on('load', function () {
         var video = document.getElementById('banner-video-desktop video');
     };
 
-
-
     var video_position = setInterval(function(){ myTimer() }, 500);
 
     function myStopFunction() {
@@ -211,8 +183,6 @@ jQuery(window).on('load', function () {
         var obj_count = jQuery(this).data( "slidecount" );
         vid_slide_count_array.push(obj_count);
     });
-
-
 
     owl.on('changed.owl.carousel', function(event) {
       if(jQuery.inArray(event.page.index, vid_slide_count_array) != -1 & ios_verison >= 10){
@@ -288,10 +258,7 @@ jQuery(window).on('load', function () {
         };
       }
     });
-
-    
-  
-   
+     
 });
   
 </script>
