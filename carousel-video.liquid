@@ -114,6 +114,7 @@ jQuery( window ).resize(function() {
   
 jQuery(window).on('load', function () {
 
+    // Video Autoplay, Controls & Mobile Functionality
     var owl = jQuery('#home-slider');
     owl.trigger('stop.owl.autoplay');
     jQuery('.video-home video').trigger('pause');
@@ -127,7 +128,6 @@ jQuery(window).on('load', function () {
     };
   
     var mobile_click_test = 0;
-  
     jQuery("#video-slide-link").click(function(e){
        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
           if(mobile_click_test == 0) {
@@ -160,9 +160,11 @@ jQuery(window).on('load', function () {
     function playfunction() {
         var video = document.getElementById('banner-video-desktop video');
     };
-
+    
+    
+    // Test slider position for video replay
+    
     var video_position = setInterval(function(){ myTimer() }, 500);
-
     function myStopFunction() {
         clearInterval(video_position);
     };
@@ -176,7 +178,6 @@ jQuery(window).on('load', function () {
               },2000);
           };
     };
-
 
     var vid_slide_count_array = [];  
     jQuery('.video-home').each(function() { 
@@ -264,6 +265,7 @@ jQuery(window).on('load', function () {
 </script>
 
 <style type="text/css">
+
   .harlings-custom-slider .owl-controls {
       margin-top: -32px;
       z-index:99999;
@@ -287,7 +289,7 @@ jQuery(window).on('load', function () {
       opacity: 0.8;
   }
 
-    .harlings-custom-slider .owl-dot  {
+  .harlings-custom-slider .owl-dot  {
       display: block;
       width: 12px;
       height: 12px;
@@ -525,7 +527,7 @@ jQuery(window).on('load', function () {
 
             {% endif %}
     
-    {% assign count_active = count_active | plus: 1 %}
+            {% assign count_active = count_active | plus: 1 %}
     
         {% endif %}
     
